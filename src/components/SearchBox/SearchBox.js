@@ -1,43 +1,50 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { json } from 'react-router-dom';
+import { getData } from '../../redux/actions/actions';
 import './SearchBox.css';
 
-class SearchBox extends Component {
-    state = {
-        searchLine: ''
-    }
-    searchLineChangeHandler = (e) => {
-        this.setState({ searchLine: e.target.value });
-    }
-    searchBoxSubmitHandler = (e) => {
-        e.preventDefault();
-    }
-    render() {
-        const { searchLine } = this.state;
+const SearchBox = () => {
 
-        return (
-            <div className="search-box">
-                <form className="search-box__form" onSubmit={this.searchBoxSubmitHandler}>
-                    <label className="search-box__form-label">
-                        Искать фильм по названию:
-                        <input
-                            value={searchLine}
-                            type="text"
-                            className="search-box__form-input"
-                            placeholder="Например, Shawshank Redemption"
-                            onChange={this.searchLineChangeHandler}
-                        />
-                    </label>
-                    <button
-                        type="submit"
-                        className="search-box__form-submit"
-                        disabled={!searchLine}
-                    >
-                        Искать
-                    </button>
-                </form>
-            </div>
-        );
+    const dispatch = useDispatch();
+
+    const [searchLine, setSearchLine] = useState('');
+    const [data, setData] = useState([]);
+
+    const searchBoxSubmitHandler = (e) => {
+        e.preventDefault();
+        dispatch(getData(data))
     }
+
+    useEffect(() => {
+        fetch(`https://www.omdbapi.com/?s=${searchLine}&apikey=43983fd`)
+            .then(res => res.json())
+            .then(apiData => setData(apiData?.Search))
+    }, [searchLine])
+
+    return (
+        <div className="search-box">
+            <form className="search-box__form" onSubmit={searchBoxSubmitHandler}>
+                <label className="search-box__form-label">
+                    Искать фильм по названию:
+                    <input
+                        defaultValue={searchLine}
+                        type="text"
+                        className="search-box__form-input"
+                        placeholder="Например, Shawshank Redemption"
+                        onChange={(e) => { setSearchLine(e.target.value) }}
+                    />
+                </label>
+                <button
+                    type="submit"
+                    className="search-box__form-submit"
+                    disabled={!searchLine}
+                >
+                    Искать
+                </button>
+            </form>
+        </div>
+    )
 }
- 
+
 export default SearchBox;
