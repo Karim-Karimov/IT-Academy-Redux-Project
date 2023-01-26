@@ -1,27 +1,29 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
+import { ChakraProvider} from "@chakra-ui/react";
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { combineReducers, createStore } from 'redux';
 
 import App from './App';
-import { addToListReducer } from './redux/reducers/list.reduce';
-import { getDataReducer } from './redux/reducers/reducer';
+import { listReduce } from './store/reducers/list.reduce';
+import { moviesReducer } from './store/reducers/reducer';
 
 const reducers = combineReducers({
-  movies: getDataReducer,
-  list: addToListReducer
+  movies: moviesReducer,
+  list: listReduce
 })
 
-const GlobalStore = createStore(
+const GlobalState = createStore(
   reducers
 )
 
-ReactDOM.render(
-  <Provider store={GlobalStore}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </Provider>,
-  document.getElementById('root')
-);
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <ChakraProvider>
+    <Provider store={GlobalState}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>
+  </ChakraProvider>,
+)

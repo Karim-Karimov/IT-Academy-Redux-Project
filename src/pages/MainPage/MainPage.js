@@ -5,7 +5,9 @@ import SearchBox from '../../components/SearchBox/SearchBox';
 import Movies from '../../components/Movies/Movies';
 import Favorites from '../../components/Favorites/Favorites';
 
-function MainPage() {
+
+const MainPage = () => {
+
     return (
         <div className="main-page">
             <Header />

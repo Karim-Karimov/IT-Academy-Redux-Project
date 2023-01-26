@@ -1,17 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import MovieItem from '../MovieItem/MovieItem';
 import './Movies.css';
 
-const Movies = () => {
 
-    const {movies} = useSelector(state => state)
-    console.log(movies[0]);
+const Movies = () => {
+    const { movies } = useSelector(state => state)
 
     return (
         <ul className="movies">
             {movies[0]?.map((movie) => (
-                <li className="movies__item" key={movie?.imdbID}>
+                <li className="movies__item" key={movie.imdbID}>
                     <MovieItem {...movie} />
                 </li>
             ))}
@@ -19,4 +18,4 @@ const Movies = () => {
     )
 }
 
-export default Movies;
+export default Movies
